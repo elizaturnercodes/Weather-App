@@ -14,25 +14,26 @@ const weatherIcon = document.querySelector(".weather-icon");
 async function checkWeather(city) {
   const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
   const data = await response.json();
-  document.querySelector(".city").innerHTML = data.name;
-  document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°F";
-  document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
-  document.querySelector(".wind").innerHTML = data.wind.speed + "mph";
+  document.querySelector(".city").textContent = data.name;
+  document.querySelector(".temp").textContent =
+    Math.round(data.main.temp) + "°F";
+  document.querySelector(".humidity").textContent = data.main.humidity + "%";
+  document.querySelector(".wind").textContent = data.wind.speed + "mph";
 
   // RETRIEVING CORRECT IMAGES
-  if (data.weather[0].main === "Clouds") {
-    weatherIcon.src = "images/clouds.png";
-  } else if (data.weather[0].main === "Rain") {
-    weatherIcon.src = "images/rain.png";
-  } else if (data.weather[0].main === "Clear") {
-    weatherIcon.src = "images/clear.png";
-  } else if (data.weather[0].main === "Drizzle") {
-    weatherIcon.src = "images/drizzle.png";
-  } else if (data.weather[0].main === "Mist") {
-    weatherIcon.src = "images/mist.png";
-  } else if (data.weather[0].main === "Snow") {
-    weatherIcon.src = "images/snow.png";
-  }
+  const weatherIconMappings = {
+    Clouds: "images/clouds.png",
+    Rain: "images/rain.png",
+    Clear: "images/clear.png",
+    Drizzle: "images/drizzle.png",
+    Mist: "images/mist.png",
+    Snow: "images/snow.png",
+  };
+
+  const weatherCondition = data.weather[0].main;
+  const defaultIcon = "images/default.png"; // Set a default icon path if needed
+
+  weatherIcon.src = weatherIconMappings[weatherCondition] || defaultIcon;
 }
 
 // SEARCH BUTTON EVENT LISTENER
